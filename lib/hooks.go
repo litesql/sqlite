@@ -8,7 +8,6 @@ import (
 	"modernc.org/libc"
 )
 
-// Format and write a message to the log if logging is enabled.
-func X__ccgo_sqlite3_log(t *libc.TLS, iErrCode int32, zFormat uintptr, va uintptr) { /* sqlite3.c:29405:17: */
+func X__ccgo_sqlite3_log(t *libc.TLS, iErrCode int32, zFormat uintptr, va uintptr) {
 	libc.X__ccgo_sqlite3_log(t, iErrCode, zFormat, va)
 }

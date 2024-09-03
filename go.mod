@@ -23,6 +23,8 @@ require (
 	modernc.org/token v1.1.0 // indirect
 )
 
+replace modernc.org/libc => ./internal/libc // https://gitlab.com/cznic/sqlite/-/issues/177
+
 retract [v1.16.0, v1.17.2] // https://gitlab.com/cznic/sqlite/-/issues/100
 
 retract v1.19.0 // module source tree too large (max size is 524288000 bytes)
