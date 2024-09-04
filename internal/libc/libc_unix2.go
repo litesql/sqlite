@@ -4,10 +4,10 @@
 
 //go:build illumos
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 func Xrecvmsg(t *TLS, sockfd int32, msg uintptr, flags int32) types.Ssize_t {

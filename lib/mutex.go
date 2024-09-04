@@ -10,8 +10,8 @@ import (
 	"sync/atomic"
 	"unsafe"
 
-	"modernc.org/libc"
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 func init() {

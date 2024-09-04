@@ -4,7 +4,7 @@
 
 //go:build !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"runtime"
@@ -13,10 +13,10 @@ import (
 	"time"
 	"unsafe"
 
-	"modernc.org/libc/errno"
-	"modernc.org/libc/pthread"
-	"modernc.org/libc/sys/types"
-	ctime "modernc.org/libc/time"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/pthread"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	ctime "modernc.org/sqlite/internal/libc/time"
 )
 
 var (

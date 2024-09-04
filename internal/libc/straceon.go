@@ -5,6 +5,6 @@
 //go:build libc.strace
 // +build libc.strace
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 const __ccgo_strace = true

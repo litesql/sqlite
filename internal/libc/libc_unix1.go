@@ -4,12 +4,12 @@
 
 //go:build unix && !illumos && !(linux && (amd64 || arm64 || loong64)) && !openbsd
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"golang.org/x/sys/unix"
 
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 func Xrecvmsg(t *TLS, sockfd int32, msg uintptr, flags int32) types.Ssize_t {

@@ -8,7 +8,7 @@
 // program is built with -tags=libc.memgrind the functions MemAuditStart and
 // MemAuditReport can be used to check for memory leaks.
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"fmt"
@@ -17,9 +17,9 @@ import (
 	"strings"
 	"unsafe"
 
-	"modernc.org/libc/errno"
-	"modernc.org/libc/sys/types"
 	"modernc.org/memory"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const memgrind = true

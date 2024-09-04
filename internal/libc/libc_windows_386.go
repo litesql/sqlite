@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"os"
@@ -11,10 +11,10 @@ import (
 	gotime "time"
 	"unsafe"
 
-	"modernc.org/libc/errno"
-	"modernc.org/libc/sys/stat"
-	"modernc.org/libc/sys/types"
-	"modernc.org/libc/time"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/sys/stat"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/time"
 )
 
 func Xsigaction(t *TLS, signum int32, act, oldact uintptr) int32 {

@@ -4,12 +4,12 @@
 
 //go:build !freebsd && !openbsd && !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"unsafe"
 
-	"modernc.org/libc/pthread"
+	"modernc.org/sqlite/internal/libc/pthread"
 )
 
 func Xpthread_attr_init(t *TLS, pAttr uintptr) int32 {

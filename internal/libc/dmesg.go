@@ -5,7 +5,7 @@
 //go:build libc.dmesg
 // +build libc.dmesg
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"fmt"

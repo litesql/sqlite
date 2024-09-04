@@ -4,7 +4,7 @@
 
 //go:build !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"fmt"
@@ -23,9 +23,9 @@ import (
 	"time"
 	"unsafe"
 
-	"modernc.org/libc/errno"
-	"modernc.org/libc/signal"
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/signal"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const (

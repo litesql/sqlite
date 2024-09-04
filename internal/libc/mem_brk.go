@@ -9,13 +9,13 @@
 // and friends is used that works like sbrk(2). Additionally free becomes a
 // nop.
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"unsafe"
 
-	"modernc.org/libc/errno"
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const (

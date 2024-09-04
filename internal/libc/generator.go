@@ -21,7 +21,7 @@ import (
 	"modernc.org/cc/v4"
 	ccgo "modernc.org/ccgo/v4/lib"
 	util "modernc.org/fileutil/ccgo"
-	"modernc.org/libc/internal/archive"
+	"modernc.org/sqlite/internal/libc/internal/archive"
 )
 
 var (

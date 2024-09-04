@@ -9,7 +9,7 @@ import (
 	"time"
 	"unsafe"
 
-	"modernc.org/libc"
+	"modernc.org/sqlite/internal/libc"
 	libsqlite3 "modernc.org/sqlite/lib"
 )
 

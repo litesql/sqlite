@@ -5,7 +5,7 @@
 package sqlite3
 
 import (
-	"modernc.org/libc"
+	"modernc.org/sqlite/internal/libc"
 )
 
 func X__ccgo_sqlite3_log(t *libc.TLS, iErrCode int32, zFormat uintptr, va uintptr) {

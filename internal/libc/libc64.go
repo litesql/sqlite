@@ -4,13 +4,13 @@
 
 //go:build ((amd64 || arm64 || loong64) && !linux) || ppc64le || riscv64 || s390x || mips64le
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"unsafe"
 
-	"modernc.org/libc/limits"
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/limits"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const (

@@ -4,12 +4,12 @@
 
 //go:build !libc.membrk && !libc.memgrind && !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
-	"modernc.org/libc/errno"
-	"modernc.org/libc/sys/types"
 	"modernc.org/memory"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const memgrind = false

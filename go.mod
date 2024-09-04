@@ -3,27 +3,24 @@ module modernc.org/sqlite
 go 1.20
 
 require (
+	github.com/dustin/go-humanize v1.0.1
 	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd
+	github.com/google/uuid v1.6.0
+	github.com/mattn/go-isatty v0.0.20
+	github.com/ncruces/go-strftime v0.1.9
 	golang.org/x/sys v0.22.0
 	modernc.org/fileutil v1.3.0
 	modernc.org/gc/v3 v3.0.0-20240107210532-573471604cb6
-	modernc.org/libc v1.55.3
 	modernc.org/mathutil v1.6.0
+	modernc.org/memory v1.8.0
 )
 
 require (
-	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
-	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/ncruces/go-strftime v0.1.9 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	modernc.org/memory v1.8.0 // indirect
 	modernc.org/strutil v1.2.0 // indirect
 	modernc.org/token v1.1.0 // indirect
 )
-
-replace modernc.org/libc => ./internal/libc // https://gitlab.com/cznic/sqlite/-/issues/177
 
 retract [v1.16.0, v1.17.2] // https://gitlab.com/cznic/sqlite/-/issues/100
 

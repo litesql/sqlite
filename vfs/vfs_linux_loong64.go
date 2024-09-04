@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"unsafe"
 
-	"modernc.org/libc"
+	"modernc.org/sqlite/internal/libc"
 
 	"modernc.org/sqlite/lib"
 )

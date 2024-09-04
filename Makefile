@@ -103,4 +103,6 @@ libc:
 		internal/libc/surface.* \
 		internal/libc/unconvert.sh \
 	# go install -v modernc.org/uncomment@latest
+	sed -i 's/"modernc.org\/libc/"modernc.org\/sqlite\/internal\/libc/' $(shell find . -name \*.go)
 	uncomment -v -gofmt lib/*.go $(shell find internal -name \*.go)
+	go build -v ./...

@@ -4,7 +4,7 @@
 
 //go:build unix && !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"bufio"
@@ -25,16 +25,16 @@ import (
 	guuid "github.com/google/uuid"
 	"github.com/ncruces/go-strftime"
 	"golang.org/x/sys/unix"
-	"modernc.org/libc/errno"
-	"modernc.org/libc/grp"
-	"modernc.org/libc/limits"
-	"modernc.org/libc/poll"
-	"modernc.org/libc/pwd"
-	"modernc.org/libc/signal"
-	"modernc.org/libc/stdio"
-	"modernc.org/libc/stdlib"
-	"modernc.org/libc/sys/types"
-	ctime "modernc.org/libc/time"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/grp"
+	"modernc.org/sqlite/internal/libc/limits"
+	"modernc.org/sqlite/internal/libc/poll"
+	"modernc.org/sqlite/internal/libc/pwd"
+	"modernc.org/sqlite/internal/libc/signal"
+	"modernc.org/sqlite/internal/libc/stdio"
+	"modernc.org/sqlite/internal/libc/stdlib"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	ctime "modernc.org/sqlite/internal/libc/time"
 )
 
 var staticGetpwnam pwd.Passwd

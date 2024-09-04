@@ -4,7 +4,7 @@
 
 //go:build !(linux && (amd64 || arm64 || loong64))
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	// "encoding/hex"
@@ -21,23 +21,23 @@ import (
 
 	guuid "github.com/google/uuid"
 	"golang.org/x/sys/unix"
-	"modernc.org/libc/errno"
-	"modernc.org/libc/fcntl"
-	"modernc.org/libc/fts"
-	gonetdb "modernc.org/libc/honnef.co/go/netdb"
-	"modernc.org/libc/langinfo"
-	"modernc.org/libc/limits"
-	"modernc.org/libc/netdb"
-	"modernc.org/libc/netinet/in"
-	"modernc.org/libc/signal"
-	"modernc.org/libc/stdio"
-	"modernc.org/libc/sys/socket"
-	"modernc.org/libc/sys/stat"
-	"modernc.org/libc/sys/types"
-	"modernc.org/libc/termios"
-	ctime "modernc.org/libc/time"
-	"modernc.org/libc/unistd"
-	"modernc.org/libc/uuid/uuid"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/fcntl"
+	"modernc.org/sqlite/internal/libc/fts"
+	gonetdb "modernc.org/sqlite/internal/libc/honnef.co/go/netdb"
+	"modernc.org/sqlite/internal/libc/langinfo"
+	"modernc.org/sqlite/internal/libc/limits"
+	"modernc.org/sqlite/internal/libc/netdb"
+	"modernc.org/sqlite/internal/libc/netinet/in"
+	"modernc.org/sqlite/internal/libc/signal"
+	"modernc.org/sqlite/internal/libc/stdio"
+	"modernc.org/sqlite/internal/libc/sys/socket"
+	"modernc.org/sqlite/internal/libc/sys/stat"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/termios"
+	ctime "modernc.org/sqlite/internal/libc/time"
+	"modernc.org/sqlite/internal/libc/unistd"
+	"modernc.org/sqlite/internal/libc/uuid/uuid"
 )
 
 const (

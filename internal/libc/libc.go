@@ -9,7 +9,7 @@
 
 // Package libc provides run time support for ccgo generated programs and
 // implements selected parts of the C standard library.
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 //TODO use O_RDONLY etc. from fcntl header
 
@@ -33,12 +33,12 @@ import (
 	"unsafe"
 
 	"github.com/mattn/go-isatty"
-	"modernc.org/libc/errno"
-	"modernc.org/libc/stdio"
-	"modernc.org/libc/sys/types"
-	"modernc.org/libc/time"
-	"modernc.org/libc/unistd"
 	"modernc.org/mathutil"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/stdio"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/time"
+	"modernc.org/sqlite/internal/libc/unistd"
 )
 
 const (

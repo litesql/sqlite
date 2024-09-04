@@ -4,7 +4,7 @@
 
 //go:build !(linux && loong64)
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"fmt"

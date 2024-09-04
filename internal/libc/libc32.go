@@ -5,13 +5,13 @@
 //go:build 386 || arm
 // +build 386 arm
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"unsafe"
 
-	"modernc.org/libc/limits"
-	"modernc.org/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/limits"
+	"modernc.org/sqlite/internal/libc/sys/types"
 )
 
 const (

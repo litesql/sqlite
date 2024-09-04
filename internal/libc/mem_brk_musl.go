@@ -12,7 +12,7 @@
 // The fixed heap is initially filled with random bytes from a full cycle PRNG,
 // program startup time is substantially prolonged.
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"fmt"

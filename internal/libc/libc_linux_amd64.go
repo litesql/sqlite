@@ -4,7 +4,7 @@
 
 //go:build !(linux && amd64)
 
-package libc // import "modernc.org/libc"
+package libc // import "modernc.org/sqlite/internal/libc"
 
 import (
 	"os"
@@ -14,13 +14,13 @@ import (
 	"unsafe"
 
 	"golang.org/x/sys/unix"
-	"modernc.org/libc/errno"
-	"modernc.org/libc/fcntl"
-	"modernc.org/libc/signal"
-	"modernc.org/libc/stdio"
-	"modernc.org/libc/sys/types"
-	"modernc.org/libc/time"
-	"modernc.org/libc/wctype"
+	"modernc.org/sqlite/internal/libc/errno"
+	"modernc.org/sqlite/internal/libc/fcntl"
+	"modernc.org/sqlite/internal/libc/signal"
+	"modernc.org/sqlite/internal/libc/stdio"
+	"modernc.org/sqlite/internal/libc/sys/types"
+	"modernc.org/sqlite/internal/libc/time"
+	"modernc.org/sqlite/internal/libc/wctype"
 )
 
 var (
