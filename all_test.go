@@ -30,7 +30,7 @@ import (
 
 	"github.com/google/pprof/profile"
 	util "modernc.org/fileutil/ccgo"
-	"modernc.org/sqlite/internal/libc"
+	"modernc.org/libc"
 	"modernc.org/mathutil"
 	sqlite3 "modernc.org/sqlite/lib"
 	"modernc.org/sqlite/vfs"
