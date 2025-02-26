@@ -51,6 +51,8 @@
 //
 // # Changelog
 //
+//   - 2025-02-26 v1.36.0: Upgrade to SQLite 3.49.0.
+//
 //   - 2024-11-16 v1.34.0: Implement ResetSession and IsValid methods in connection
 //
 //   - 2024-07-22 v1.31.0: Support windows/386.

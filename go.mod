@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/google/pprof v0.0.0-20240409012703-83162a5b38cd
-	golang.org/x/sys v0.28.0
+	golang.org/x/sys v0.30.0
 	modernc.org/fileutil v1.3.0
 	modernc.org/libc v1.61.13
 	modernc.org/mathutil v1.7.1
