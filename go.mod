@@ -2,8 +2,6 @@ module modernc.org/sqlite
 
 go 1.23.0
 
-toolchain go1.24.1
-
 require (
 	github.com/google/pprof v0.0.0-20250317173921-a4b03ec1a45e
 	golang.org/x/sys v0.31.0
