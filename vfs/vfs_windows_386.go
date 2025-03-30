@@ -10,8 +10,8 @@ import (
 	"unsafe"
 
 	"modernc.org/libc"
-	libsqlite3 "modernc.org/sqlite/lib"
 	"modernc.org/libc/sys/types"
+	libsqlite3 "modernc.org/sqlite/lib"
 )
 
 var (
