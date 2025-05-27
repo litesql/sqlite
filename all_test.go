@@ -13,6 +13,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"math"
 	"math/rand"
 	"net/url"
 	"os"
@@ -3306,4 +3307,56 @@ func TestIssue171(t *testing.T) {
 	if len(m) != 0 {
 		t.Fatal(m)
 	}
+}
+
+// https://gitlab.com/cznic/sqlite/-/issues/209
+func TestIssue209(t *testing.T) {
+	MustRegisterDeterministicScalarFunction("scalar_func", -1, func(_ *FunctionContext, args []driver.Value) (driver.Value, error) {
+		if data, ok := args[0].([]byte); ok {
+			return int64(len(data)), nil
+		}
+		return int64(-1), nil
+	})
+
+	tempDir := t.TempDir()
+	db, err := sql.Open("sqlite", fmt.Sprintf("file:%s?_pragma=journal_mode(WAL)", filepath.Join(tempDir, "db.db")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	_, err = db.Exec(`DROP TABLE IF EXISTS "testtable"; CREATE TABLE "testtable" ("data" BLOB NOT NULL);`)
+	if err != nil {
+		panic(err)
+	}
+
+	doTest := func(data []byte) {
+		rows, err := db.Query(`INSERT INTO "main"."testtable" ("data") VALUES (?) RETURNING SCALAR_FUNC("data");`, data)
+		if err != nil {
+			t.Error(err)
+		}
+		defer rows.Close()
+
+		if rows.Next() {
+			returnedLength := int64(math.MinInt64)
+			if err := rows.Scan(&returnedLength); err != nil {
+				panic(err)
+			}
+
+			if len(data) != int(returnedLength) {
+				panic(fmt.Sprintf("returned length: %d, expected: %d", returnedLength, len(data)))
+			}
+		}
+
+		if err := rows.Err(); err != nil {
+			panic(err)
+		}
+	}
+
+	t.Run("non-empty-blob", func(t *testing.T) {
+		doTest([]byte{1, 2, 3})
+	})
+	t.Run("empty-blob", func(t *testing.T) {
+		doTest([]byte{})
+	})
 }
