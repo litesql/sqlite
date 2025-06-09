@@ -5,8 +5,8 @@ go 1.23.0
 require (
 	github.com/google/pprof v0.0.0-20250317173921-a4b03ec1a45e
 	golang.org/x/sys v0.33.0
-	modernc.org/fileutil v1.3.1
-	modernc.org/libc v1.65.7
+	modernc.org/fileutil v1.3.3
+	modernc.org/libc v1.65.10
 	modernc.org/mathutil v1.7.1
 )
 
