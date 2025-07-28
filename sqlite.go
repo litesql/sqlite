@@ -255,20 +255,29 @@ func (r *rows) Next(dest []driver.Value) (err error) {
 					return err
 				}
 
-				// Inspired by mattn/go-sqlite3: https://github.com/mattn/go-sqlite3/blob/f76bae4b0044cbba8fb2c72b8e4559e8fbcffd86/sqlite3.go#L2254-L2262
-				switch r.ColumnTypeDatabaseTypeName(i) {
-				case "DATE", "DATETIME", "TIMESTAMP":
-					//
-					if v > 1e12 || v < -1e12 {
-						// time.Unix expects nanoseconds, but this is a
-						// milliseconds timestamp, so convert ms->ns.
-						v *= int64(time.Millisecond)
-						dest[i] = time.Unix(0, v).UTC()
-					} else {
-						dest[i] = time.Unix(v, 0)
-					}
-				default:
+				if !r.c.intToTime {
 					dest[i] = v
+				} else {
+					// Inspired by mattn/go-sqlite3:
+					// https://github.com/mattn/go-sqlite3/blob/f76bae4b0044cbba8fb2c72b8e4559e8fbcffd86/sqlite3.go#L2254-L2262
+					// but we put make this compatibility optional behind a DSN
+					// query parameter, because this changes API behavior, so an
+					// opt-in is needed.
+					switch r.ColumnTypeDatabaseTypeName(i) {
+					case "DATE", "DATETIME", "TIMESTAMP":
+						// Is it a seconds timestamp or a milliseconds
+						// timestamp?
+						if v > 1e12 || v < -1e12 {
+							// time.Unix expects nanoseconds, but this is a
+							// milliseconds timestamp, so convert ms->ns.
+							v *= int64(time.Millisecond)
+							dest[i] = time.Unix(0, v).UTC()
+						} else {
+							dest[i] = time.Unix(v, 0)
+						}
+					default:
+						dest[i] = v
+					}
 				}
 			case sqlite3.SQLITE_FLOAT:
 				v, err := r.c.columnDouble(r.pstmt, i)
@@ -833,6 +842,7 @@ type conn struct {
 
 	writeTimeFormat string
 	beginMode       string
+	intToTime       bool
 }
 
 func newConn(dsn string) (*conn, error) {
@@ -944,6 +954,15 @@ func applyQueryParams(c *conn, query string) error {
 			return fmt.Errorf("unknown _txlock %q", v)
 		}
 		c.beginMode = v
+	}
+
+	if v := q.Get("_inttotime"); v != "" {
+		onoff, err := strconv.ParseBool(v)
+		if err != nil {
+			return fmt.Errorf("unknown _inttotime %q, must be 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False",
+				v)
+		}
+		c.intToTime = onoff
 	}
 
 	return nil
