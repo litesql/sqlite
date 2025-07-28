@@ -23,6 +23,7 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
+	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -1444,6 +1445,101 @@ func TestTimeFormatBad(t *testing.T) {
 	}
 
 	want := `unknown _time_format "bogus"`
+	if got := err.Error(); got != want {
+		t.Fatalf("got error %q, want %q", got, want)
+	}
+}
+
+func TestIntToTimeDefaultOff(t *testing.T) {
+	db, err := sql.Open(driverName, "file::memory:")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	_, err = db.Exec("create table 'test' ('name' varchar(32) not null, 'modified' timestamp not null default current_timestamp, primary key('name') )")
+	if err != nil {
+		t.Fatalf("unexpected create table error, %s", err.Error())
+	}
+
+	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', " +
+		strconv.FormatInt(time.Now().UTC().Unix(), 10) + ")")
+	if err != nil {
+		t.Fatalf("unexpected insert error, %s", err.Error())
+	}
+
+	rows, err := db.Query("select * from 'test'")
+	if err != nil {
+		t.Fatalf("unexpected select error, %s", err.Error())
+	}
+	defer rows.Close()
+	var (
+		actualName      string
+		actualTimestamp time.Time
+	)
+	if !rows.Next() {
+		t.Fatalf("unexpected empty select result")
+	}
+	err = rows.Scan(&actualName, &actualTimestamp)
+	if err == nil {
+		t.Fatal("wanted error")
+	}
+	want := `sql: Scan error on column index 1, name "modified": unsupported Scan, storing driver.Value type int64 into type *time.Time`
+	if got := err.Error(); got != want {
+		t.Fatalf("got error %q, want %q", got, want)
+	}
+}
+
+func TestIntToTimeOptIn(t *testing.T) {
+	db, err := sql.Open(driverName, "file::memory:?_inttotime=1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	_, err = db.Exec("create table 'test' ('name' varchar(32) not null, 'modified' timestamp not null default current_timestamp, primary key('name') )")
+	if err != nil {
+		t.Fatalf("unexpected create table error, %s", err.Error())
+	}
+
+	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', " +
+		strconv.FormatInt(time.Now().UTC().Unix(), 10) + ")")
+	if err != nil {
+		t.Fatalf("unexpected insert error, %s", err.Error())
+	}
+
+	rows, err := db.Query("select * from 'test'")
+	if err != nil {
+		t.Fatalf("unexpected select error, %s", err.Error())
+	}
+	defer rows.Close()
+	var (
+		actualName      string
+		actualTimestamp time.Time
+	)
+	if !rows.Next() {
+		t.Fatalf("unexpected empty select result")
+	}
+	err = rows.Scan(&actualName, &actualTimestamp)
+	if err != nil {
+		t.Fatalf("unexpected scan error, %s", err.Error())
+	}
+}
+
+func TestIntToTimeOptInBad(t *testing.T) {
+	db, err := sql.Open(driverName, "file::memory:?_inttotime=foobar")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer db.Close()
+
+	// Error doesn't appear until a connection is opened.
+	_, err = db.Exec("select 1")
+	if err == nil {
+		t.Fatal("wanted error")
+	}
+
+	want := `unknown _inttotime "foobar", must be 1, t, T, TRUE, true, True, 0, f, F, FALSE, false, False`
 	if got := err.Error(); got != want {
 		t.Fatalf("got error %q, want %q", got, want)
 	}
