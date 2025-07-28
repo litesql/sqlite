@@ -255,7 +255,21 @@ func (r *rows) Next(dest []driver.Value) (err error) {
 					return err
 				}
 
-				dest[i] = v
+				// Inspired by mattn/go-sqlite3: https://github.com/mattn/go-sqlite3/blob/f76bae4b0044cbba8fb2c72b8e4559e8fbcffd86/sqlite3.go#L2254-L2262
+				switch r.ColumnTypeDatabaseTypeName(i) {
+				case "DATE", "DATETIME", "TIMESTAMP":
+					//
+					if v > 1e12 || v < -1e12 {
+						// time.Unix expects nanoseconds, but this is a
+						// milliseconds timestamp, so convert ms->ns.
+						v *= int64(time.Millisecond)
+						dest[i] = time.Unix(0, v).UTC()
+					} else {
+						dest[i] = time.Unix(v, 0)
+					}
+				default:
+					dest[i] = v
+				}
 			case sqlite3.SQLITE_FLOAT:
 				v, err := r.c.columnDouble(r.pstmt, i)
 				if err != nil {
