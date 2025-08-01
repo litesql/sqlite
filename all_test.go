@@ -23,7 +23,6 @@ import (
 	"runtime"
 	"runtime/debug"
 	"runtime/pprof"
-	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
@@ -1462,8 +1461,7 @@ func TestIntToTimeDefaultOff(t *testing.T) {
 		t.Fatalf("unexpected create table error, %s", err.Error())
 	}
 
-	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', " +
-		strconv.FormatInt(time.Now().UTC().Unix(), 10) + ")")
+	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', ?)", time.Now().UTC().Unix())
 	if err != nil {
 		t.Fatalf("unexpected insert error, %s", err.Error())
 	}
@@ -1502,8 +1500,7 @@ func TestIntToTimeOptIn(t *testing.T) {
 		t.Fatalf("unexpected create table error, %s", err.Error())
 	}
 
-	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', " +
-		strconv.FormatInt(time.Now().UTC().Unix(), 10) + ")")
+	_, err = db.Exec("insert into 'test' (name, modified) values ('foobar', ?)", time.Now().UTC().Unix())
 	if err != nil {
 		t.Fatalf("unexpected insert error, %s", err.Error())
 	}
