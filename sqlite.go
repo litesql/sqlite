@@ -2062,6 +2062,9 @@ func newDriver() *Driver { return d }
 // which corresponds to seconds, milliseconds, microseconds or nanoseconds
 // since unixepoch (1 January 1970 00:00:00 UTC).
 //
+// _inttotime: Enable conversion of time column (DATE, DATETIME,TIMESTAMP) from integer
+// to time if the field contain integer (int64).
+//
 // _txlock: The locking behavior to use when beginning a transaction. May be
 // "deferred" (the default), "immediate", or "exclusive" (case insensitive). See:
 // https://www.sqlite.org/lang_transaction.html#deferred_immediate_and_exclusive_transactions
