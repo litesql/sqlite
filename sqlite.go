@@ -840,9 +840,10 @@ type conn struct {
 	// concurrently.
 	sync.Mutex
 
-	writeTimeFormat string
-	beginMode       string
-	intToTime       bool
+	writeTimeFormat   string
+	beginMode         string
+	intToTime         bool
+	integerTimeFormat string
 }
 
 func newConn(dsn string) (*conn, error) {
@@ -946,6 +947,17 @@ func applyQueryParams(c *conn, query string) error {
 			return fmt.Errorf("unknown _time_format %q", v)
 		}
 		c.writeTimeFormat = f
+	}
+	if v := q.Get("_time_integer_format"); v != "" {
+		switch v {
+		case "unix":
+		case "unix_milli":
+		case "unix_micro":
+		case "unix_nano":
+		default:
+			return fmt.Errorf("unknown _time_integer_format %q", v)
+		}
+		c.integerTimeFormat = v
 	}
 
 	if v := q.Get("_txlock"); v != "" {
@@ -1215,9 +1227,29 @@ func (c *conn) bind(pstmt uintptr, n int, args []driver.NamedValue) (allocs []ui
 				return allocs, err
 			}
 		case time.Time:
-			if p, err = c.bindText(pstmt, i, c.formatTime(x)); err != nil {
-				return allocs, err
+			switch c.integerTimeFormat {
+			case "unix":
+				if err := c.bindInt64(pstmt, i, x.Unix()); err != nil {
+					return allocs, err
+				}
+			case "unix_milli":
+				if err := c.bindInt64(pstmt, i, x.UnixMilli()); err != nil {
+					return allocs, err
+				}
+			case "unix_micro":
+				if err := c.bindInt64(pstmt, i, x.UnixMicro()); err != nil {
+					return allocs, err
+				}
+			case "unix_nano":
+				if err := c.bindInt64(pstmt, i, x.UnixNano()); err != nil {
+					return allocs, err
+				}
+			default:
+				if p, err = c.bindText(pstmt, i, c.formatTime(x)); err != nil {
+					return allocs, err
+				}
 			}
+
 		case nil:
 			if p, err = c.bindNull(pstmt, i); err != nil {
 				return allocs, err
@@ -2019,6 +2051,19 @@ func newDriver() *Driver { return d }
 // to format 7 from https://www.sqlite.org/lang_datefunc.html#time_values,
 // including the timezone specifier. If this parameter is not specified, then
 // the default String() format will be used.
+//
+// _time_integer_format: The name of a integer format to use when writing time values.
+// By default, the time is stored as string and the format can be set with _time_format
+// parameter. If _time_integer_format is set, the time will be stored as an integer and
+// the integer value will depend on the integer format.
+// If you decide to set both _time_format and _time_integer_format, the time will be
+// converted as integer and the _time_format value will be ignored.
+// Currently the supported value are "unix","unix_milli", "unix_micro" and "unix_nano",
+// which corresponds to seconds, milliseconds, microseconds or nanoseconds
+// since unixepoch (1 January 1970 00:00:00 UTC).
+//
+// _inttotime: Enable conversion of time column (DATE, DATETIME,TIMESTAMP) from integer
+// to time if the field contain integer (int64).
 //
 // _txlock: The locking behavior to use when beginning a transaction. May be
 // "deferred" (the default), "immediate", or "exclusive" (case insensitive). See:

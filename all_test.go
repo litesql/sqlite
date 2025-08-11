@@ -1430,6 +1430,52 @@ func TestTimeFormat(t *testing.T) {
 	}
 }
 
+func TestIntegerFormat(t *testing.T) {
+	ref := time.Date(2021, 1, 2, 16, 39, 17, 123456789, time.UTC)
+
+	cases := []struct {
+		f string
+		w int64
+	}{
+		{f: "unix", w: ref.Unix()},
+		{f: "unix_milli", w: ref.UnixMilli()},
+		{f: "unix_micro", w: ref.UnixMicro()},
+		{f: "unix_nano", w: ref.UnixNano()},
+	}
+	for _, c := range cases {
+		t.Run("", func(t *testing.T) {
+			dsn := "file::memory:"
+			if c.f != "" {
+				q := make(url.Values)
+				q.Set("_time_integer_format", c.f)
+				dsn += "?" + q.Encode()
+			}
+			db, err := sql.Open(driverName, dsn)
+			if err != nil {
+				t.Fatal(err)
+			}
+			defer db.Close()
+
+			if _, err := db.Exec("drop table if exists x; create table x (y integer)"); err != nil {
+				t.Fatal(err)
+			}
+
+			if _, err := db.Exec(`insert into x values (?)`, ref); err != nil {
+				t.Fatal(err)
+			}
+
+			var got int64
+			if err := db.QueryRow(`select y from x`).Scan(&got); err != nil {
+				t.Fatal(err)
+			}
+
+			if got != c.w {
+				t.Fatal(got, c.w)
+			}
+		})
+	}
+}
+
 func TestTimeFormatBad(t *testing.T) {
 	db, err := sql.Open(driverName, "file::memory:?_time_format=bogus")
 	if err != nil {
