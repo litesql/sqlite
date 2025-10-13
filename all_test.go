@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package sqlite // import "modernc.org/sqlite"
+package sqlite // import "github.com/litesql/sqlite"
 
 import (
 	"bytes"
@@ -30,11 +30,11 @@ import (
 	"time"
 
 	"github.com/google/pprof/profile"
+	sqlite3 "github.com/litesql/sqlite/lib"
+	"github.com/litesql/sqlite/vfs"
 	util "modernc.org/fileutil/ccgo"
 	"modernc.org/libc"
 	"modernc.org/mathutil"
-	sqlite3 "modernc.org/sqlite/lib"
-	"modernc.org/sqlite/vfs"
 )
 
 func caller(s string, va ...interface{}) {

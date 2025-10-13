@@ -1,4 +1,4 @@
-module modernc.org/sqlite
+module github.com/litesql/sqlite
 
 go 1.24.0
 
@@ -7,7 +7,7 @@ require (
 	golang.org/x/sys v0.36.0
 	modernc.org/fileutil v1.3.40
 	modernc.org/libc v1.66.10
-	modernc.org/mathutil v1.7.1
+	modernc.org/mathutil v1.7.1	
 )
 
 require (

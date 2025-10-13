@@ -5,8 +5,8 @@ import (
 	"slices"
 	"testing"
 
-	"modernc.org/sqlite"
-	sqlite3 "modernc.org/sqlite/lib"
+	"github.com/litesql/sqlite"
+	sqlite3 "github.com/litesql/sqlite/lib"
 )
 
 func TestPreUpdateHook(t *testing.T) {

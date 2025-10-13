@@ -58,7 +58,7 @@
 //   - 2025-10-10 v1.39.1: Upgrade to SQLite 3.50.4.
 //
 //   - 2025-06-09 v1.38.0: Upgrade to SQLite 3.50.1.
-// 
+//
 //   - 2025-02-26 v1.36.0: Upgrade to SQLite 3.49.0.
 //
 //   - 2024-11-16 v1.34.0: Implement ResetSession and IsValid methods in connection
@@ -92,7 +92,7 @@
 //   - 2022-09-16 v1.19.0: Support frebsd/arm64.
 //
 //   - 2022-07-26 v1.18.0: Add support for Go fs.FS based SQLite virtual
-//     filesystems, see function New in modernc.org/sqlite/vfs and/or TestVFS in
+//     filesystems, see function New in github.com/litesql/sqlite/vfs and/or TestVFS in
 //     all_test.go
 //
 //   - 2022-04-24 v1.17.0: Support windows/arm64.
@@ -159,7 +159,7 @@
 //	import (
 //		"database/sql"
 //
-//		_ "modernc.org/sqlite"
+//		_ "github.com/litesql/sqlite/sqlite"
 //	)
 //
 //	...
@@ -188,27 +188,27 @@
 //
 // This is an example of how to use the debug logs in modernc.org/libc when hunting a bug.
 //
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ git status
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ git status
 //	On branch master
 //	Your branch is up to date with 'origin/master'.
 //
 //	nothing to commit, working tree clean
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ git log -1
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ git log -1
 //	commit df33b8d15107f3cc777799c0fe105f74ef499e62 (HEAD -> master, tag: v1.21.1, origin/master, origin/HEAD, wips, ok)
 //	Author: Jan Mercl <0xjnml@gmail.com>
 //	Date:   Mon Mar 27 16:18:28 2023 +0200
 //
 //	    upgrade to SQLite 3.41.2
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ rm -f /tmp/libc.log ; go test -v -tags=libc.dmesg -run TestScalar ; ls -l /tmp/libc.log
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ rm -f /tmp/libc.log ; go test -v -tags=libc.dmesg -run TestScalar ; ls -l /tmp/libc.log
 //	test binary compiled for linux/amd64
 //	=== RUN   TestScalar
 //	--- PASS: TestScalar (0.09s)
 //	PASS
-//	ok  modernc.org/sqlite 0.128s
+//	ok  github.com/litesql/sqlite/sqlite 0.128s
 //	-rw-r--r-- 1 jnml jnml 76 Apr  6 11:22 /tmp/libc.log
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ cat /tmp/libc.log
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ cat /tmp/libc.log
 //	[10723 sqlite.test] 2023-04-06 11:22:48.288066057 +0200 CEST m=+0.000707150
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$
 //
 // The /tmp/libc.log file is created as requested. No useful messages there because none are enabled in libc. Let's try to enable Xwrite as an example.
 //
@@ -264,19 +264,19 @@
 //
 // We need to tell the Go build system to use our local, patched/debug libc:
 //
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ go work use $(go env GOPATH)/src/modernc.org/libc
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ go work use .
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ go work use $(go env GOPATH)/src/modernc.org/libc
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ go work use .
 //
 // And run the test again:
 //
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ rm -f /tmp/libc.log ; go test -v -tags=libc.dmesg -run TestScalar ; ls -l /tmp/libc.log
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ rm -f /tmp/libc.log ; go test -v -tags=libc.dmesg -run TestScalar ; ls -l /tmp/libc.log
 //	test binary compiled for linux/amd64
 //	=== RUN   TestScalar
 //	--- PASS: TestScalar (0.26s)
 //	PASS
-//	ok   modernc.org/sqlite 0.285s
+//	ok   github.com/litesql/sqlite/sqlite 0.285s
 //	-rw-r--r-- 1 jnml jnml 918 Apr  6 11:29 /tmp/libc.log
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$ cat /tmp/libc.log
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$ cat /tmp/libc.log
 //	[11910 sqlite.test] 2023-04-06 11:29:13.143589542 +0200 CEST m=+0.000689270
 //	[11910 sqlite.test] libc_linux.go:337:Xwrite: 8 0x200: 0x200
 //	[11910 sqlite.test] libc_linux.go:337:Xwrite: 8 0xc: 0xc
@@ -292,11 +292,11 @@
 //	[11910 sqlite.test] libc_linux.go:337:Xwrite: 8 0xc: 0xc
 //	[11910 sqlite.test] libc_linux.go:337:Xwrite: 7 0x1000: 0x1000
 //	[11910 sqlite.test] libc_linux.go:337:Xwrite: 7 0x1000: 0x1000
-//	0:jnml@e5-1650:~/src/modernc.org/sqlite$
+//	0:jnml@e5-1650:~/src/github.com/litesql/sqlite/sqlite$
 //
 // # Sqlite documentation
 //
 // See https://sqlite.org/docs.html
 //
-// [The SQLite Drivers Benchmarks Game]: https://pkg.go.dev/modernc.org/sqlite-bench#readme-tl-dr-scorecard
-package sqlite // import "modernc.org/sqlite"
+// [The SQLite Drivers Benchmarks Game]: https://pkg.go.dev/github.com/litesql/sqlite/sqlite-bench#readme-tl-dr-scorecard
+package sqlite // import "github.com/litesql/sqlite/sqlite"

@@ -2,14 +2,14 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package sqlite // import "modernc.org/sqlite"
+package sqlite // import "github.com/litesql/sqlite"
 
 import (
 	"runtime"
 	"unsafe"
 
+	sqlite3 "github.com/litesql/sqlite/lib"
 	"modernc.org/libc"
-	sqlite3 "modernc.org/sqlite/lib"
 )
 
 // Access to sqlite3_file_control
