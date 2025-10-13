@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/litesql/sqlite"
 )
 
 func main() {
