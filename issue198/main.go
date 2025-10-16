@@ -16,8 +16,8 @@ import (
 
 	"golang.org/x/sync/errgroup"
 
+	_ "github.com/litesql/sqlite"
 	_ "github.com/mattn/go-sqlite3"
-	_ "modernc.org/sqlite"
 )
 
 func main() {

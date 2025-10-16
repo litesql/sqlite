@@ -13,8 +13,8 @@ import (
 	"sync/atomic"
 	"unsafe"
 
+	sqlite3 "github.com/litesql/sqlite/lib"
 	"modernc.org/libc"
-	sqlite3 "modernc.org/sqlite/lib"
 )
 
 var (
