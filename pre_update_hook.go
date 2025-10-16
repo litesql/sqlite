@@ -96,8 +96,13 @@ func (d *SQLitePreUpdateData) Count() int {
 
 func (d *SQLitePreUpdateData) row(dest []any, new bool) error {
 	count := d.Count()
+	ppValue, err := mallocValue(d.tls)
+	if err != nil {
+		return err
+	}
+	defer libc.Xfree(d.tls, ppValue)
 	for i := 0; i < count && i < len(dest); i++ {
-		val, err := d.value(i, new)
+		val, err := d.value(ppValue, i, new)
 		if err != nil {
 			return err
 		}
@@ -137,13 +142,7 @@ func mallocValue(tls *libc.TLS) (uintptr, error) {
 	return p, nil
 }
 
-func (d *SQLitePreUpdateData) value(i int, new bool) (any, error) {
-	ppValue, err := mallocValue(d.tls)
-	if err != nil {
-		return nil, err
-	}
-	defer libc.Xfree(d.tls, ppValue)
-
+func (d *SQLitePreUpdateData) value(ppValue uintptr, i int, new bool) (any, error) {
 	var src any
 
 	if new {
@@ -200,13 +199,21 @@ func commitHookTrampoline(tls *libc.TLS, handle uintptr, pCsr uintptr) int32 {
 	xCommitHandler := xCommitHandlers.m[handle]
 	xCommitHandlers.mu.RUnlock()
 
+	if xCommitHandler == nil {
+		return 0
+	}
+
 	return xCommitHandler()
 }
 
 func rollbackHookTrampoline(tls *libc.TLS, handle uintptr, pCsr uintptr) {
 	xRollbackHandlers.mu.RLock()
-	xRollbackHandler := xCommitHandlers.m[handle]
+	xRollbackHandler := xRollbackHandlers.m[handle]
 	xRollbackHandlers.mu.RUnlock()
+
+	if xRollbackHandler == nil {
+		return
+	}
 
 	xRollbackHandler()
 }

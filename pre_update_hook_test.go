@@ -26,43 +26,45 @@ func TestPreUpdateHook(t *testing.T) {
 	)
 	var testDriver sqlite.Driver
 	testDriver.RegisterConnectionHook(func(conn sqlite.ExecQuerierContext, dsn string) error {
-		conn.RegisterPreUpdateHook(func(data sqlite.SQLitePreUpdateData) {
-			switch data.Op {
-			case sqlite3.SQLITE_INSERT:
-				insertCount++
-				insertNewValues = make([]any, data.Count())
-				err := data.New(insertNewValues...)
-				if err != nil {
-					t.Fatal(err)
+		if hooker, ok := conn.(sqlite.HookRegisterer); ok {
+			hooker.RegisterPreUpdateHook(func(data sqlite.SQLitePreUpdateData) {
+				switch data.Op {
+				case sqlite3.SQLITE_INSERT:
+					insertCount++
+					insertNewValues = make([]any, data.Count())
+					err := data.New(insertNewValues...)
+					if err != nil {
+						t.Fatal(err)
+					}
+				case sqlite3.SQLITE_UPDATE:
+					updateCount++
+					updateOldValues = make([]any, data.Count())
+					err := data.Old(updateOldValues...)
+					if err != nil {
+						t.Fatal(err)
+					}
+					updateNewValues = make([]any, data.Count())
+					err = data.New(updateNewValues...)
+					if err != nil {
+						t.Fatal(err)
+					}
+				case sqlite3.SQLITE_DELETE:
+					deleteCount++
+					deleteOldValues = make([]any, data.Count())
+					err := data.Old(deleteOldValues...)
+					if err != nil {
+						t.Fatal(err)
+					}
 				}
-			case sqlite3.SQLITE_UPDATE:
-				updateCount++
-				updateOldValues = make([]any, data.Count())
-				err := data.Old(updateOldValues...)
-				if err != nil {
-					t.Fatal(err)
-				}
-				updateNewValues = make([]any, data.Count())
-				err = data.New(updateNewValues...)
-				if err != nil {
-					t.Fatal(err)
-				}
-			case sqlite3.SQLITE_DELETE:
-				deleteCount++
-				deleteOldValues = make([]any, data.Count())
-				err := data.Old(deleteOldValues...)
-				if err != nil {
-					t.Fatal(err)
-				}
-			}
-		})
-		conn.RegisterCommitHook(func() int32 {
-			commitCount++
-			return 0
-		})
-		conn.RegisterRollbackHook(func() {
-			rollbackCount++
-		})
+			})
+			hooker.RegisterCommitHook(func() int32 {
+				commitCount++
+				return 0
+			})
+			hooker.RegisterRollbackHook(func() {
+				rollbackCount++
+			})
+		}
 		return nil
 	})
 
