@@ -6,9 +6,9 @@ import (
 	"sync"
 	"unsafe"
 
+	sqlite3 "github.com/litesql/sqlite/lib"
 	"modernc.org/libc"
 	"modernc.org/libc/sys/types"
-	sqlite3 "modernc.org/sqlite/lib"
 )
 
 var (
@@ -190,7 +190,7 @@ func preUpdateHookTrampoline(tls *libc.TLS, handle uintptr, pCsr uintptr, op int
 		DatabaseName: libc.GoString(zDb),
 		TableName:    libc.GoString(pTab),
 		OldRowID:     iKey1,
-		NewRowID:     iKey1,
+		NewRowID:     int64(iReg),
 	}
 	xPreUpdateHandler(data)
 }
