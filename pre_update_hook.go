@@ -35,42 +35,50 @@ var (
 type PreUpdateHookFn func(SQLitePreUpdateData)
 
 func (c *conn) RegisterPreUpdateHook(callback PreUpdateHookFn) {
+
+	if callback == nil {
+		xPreUpdateHandlers.mu.Lock()
+		delete(xPreUpdateHandlers.m, c.db)
+		xPreUpdateHandlers.mu.Unlock()
+		sqlite3.Xsqlite3_preupdate_hook(c.tls, c.db, uintptr(unsafe.Pointer(nil)), uintptr(unsafe.Pointer(nil)))
+		return
+	}
 	xPreUpdateHandlers.mu.Lock()
 	xPreUpdateHandlers.m[c.db] = callback
 	xPreUpdateHandlers.mu.Unlock()
 
-	if callback == nil {
-		sqlite3.Xsqlite3_preupdate_hook(c.tls, c.db, cFuncPointer(func() {}), cFuncPointer(func() {}))
-		return
-	}
 	sqlite3.Xsqlite3_preupdate_hook(c.tls, c.db, cFuncPointer(preUpdateHookTrampoline), c.db)
 }
 
 type CommitHookFn func() int32
 
 func (c *conn) RegisterCommitHook(callback CommitHookFn) {
-	xCommitHandlers.mu.Lock()
-	xCommitHandlers.m[c.db] = callback
-	xCommitHandlers.mu.Unlock()
-
 	if callback == nil {
+		xCommitHandlers.mu.Lock()
+		delete(xCommitHandlers.m, c.db)
+		xCommitHandlers.mu.Unlock()
 		sqlite3.Xsqlite3_commit_hook(c.tls, c.db, uintptr(unsafe.Pointer(nil)), uintptr(unsafe.Pointer(nil)))
 		return
 	}
+	xCommitHandlers.mu.Lock()
+	xCommitHandlers.m[c.db] = callback
+	xCommitHandlers.mu.Unlock()
 	sqlite3.Xsqlite3_commit_hook(c.tls, c.db, cFuncPointer(commitHookTrampoline), c.db)
 }
 
 type RollbackHookFn func()
 
 func (c *conn) RegisterRollbackHook(callback RollbackHookFn) {
+	if callback == nil {
+		xRollbackHandlers.mu.Lock()
+		delete(xRollbackHandlers.m, c.db)
+		xRollbackHandlers.mu.Unlock()
+		sqlite3.Xsqlite3_rollback_hook(c.tls, c.db, uintptr(unsafe.Pointer(nil)), uintptr(unsafe.Pointer(nil)))
+		return
+	}
 	xRollbackHandlers.mu.Lock()
 	xRollbackHandlers.m[c.db] = callback
 	xRollbackHandlers.mu.Unlock()
-
-	if callback == nil {
-		sqlite3.Xsqlite3_rollback_hook(c.tls, c.db, cFuncPointer(func() {}), cFuncPointer(func() {}))
-		return
-	}
 	sqlite3.Xsqlite3_rollback_hook(c.tls, c.db, cFuncPointer(rollbackHookTrampoline), c.db)
 }
 
@@ -101,6 +109,7 @@ func (d *SQLitePreUpdateData) row(dest []any, new bool) error {
 		return err
 	}
 	defer libc.Xfree(d.tls, ppValue)
+
 	for i := 0; i < count && i < len(dest); i++ {
 		val, err := d.value(ppValue, i, new)
 		if err != nil {
@@ -144,7 +153,6 @@ func mallocValue(tls *libc.TLS) (uintptr, error) {
 
 func (d *SQLitePreUpdateData) value(ppValue uintptr, i int, new bool) (any, error) {
 	var src any
-
 	if new {
 		sqlite3.Xsqlite3_preupdate_new(d.tls, d.pCsr, int32(i), ppValue)
 	} else {

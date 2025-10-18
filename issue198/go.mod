@@ -3,9 +3,9 @@ module example.com/issue198
 go 1.24.0
 
 require (
-	github.com/mattn/go-sqlite3 v1.14.24
-	golang.org/x/sync v0.16.0
-	github.com/litesql/sqlite v1.39.3
+	github.com/litesql/sqlite v1.39.6
+	github.com/mattn/go-sqlite3 v1.14.32
+	golang.org/x/sync v0.17.0
 )
 
 require (

@@ -1983,15 +1983,15 @@ func (b *Backup) Finish() error {
 	}
 }
 
+type ExecQuerierContext interface {
+	driver.ExecerContext
+	driver.QueryerContext
+}
+
 type HookRegisterer interface {
 	RegisterPreUpdateHook(PreUpdateHookFn)
 	RegisterCommitHook(CommitHookFn)
 	RegisterRollbackHook(RollbackHookFn)
-}
-
-type ExecQuerierContext interface {
-	driver.ExecerContext
-	driver.QueryerContext
 }
 
 // Commit releases all resources associated with the Backup object but does not

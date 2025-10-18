@@ -78,9 +78,9 @@ func TestPreUpdateHook(t *testing.T) {
 	expectInsertValues := []any{int64(42), 3.1415, "Test", "will be nil"}
 	expectUpdateValues := []any{int64(43), 1.5, "Test update", nil}
 	_, err = db.Exec(`
-	CREATE TABLE in_memory_test(i INTEGER, f FLOAT, t TEXT, x ANY);
+	CREATE TABLE in_memory_test(id INTEGER PRIMARY KEY, f FLOAT, t TEXT, x ANY);
 	INSERT INTO in_memory_test VALUES(42, 3.1415, 'Test', 'will be nil');
-	UPDATE in_memory_test SET i = 43, f = 1.5, t = 'Test update', x = null;
+	UPDATE in_memory_test SET id = 43, f = 1.5, t = 'Test update', x = null;
 	DELETE FROM in_memory_test;
 	SELECT 1;
 	`)
